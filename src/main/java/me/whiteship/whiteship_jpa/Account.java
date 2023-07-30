@@ -26,4 +26,10 @@ public class Account {
 
     @Transient // 컬러으로 매핑 하지 않는다.
     private String no;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "street", column = @Column(name = "home_street"))
+    })
+    private Address homeAddress;
 }
