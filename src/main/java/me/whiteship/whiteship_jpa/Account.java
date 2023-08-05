@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity // 자동으로 테이블로 메핑
 @Getter
@@ -19,17 +20,16 @@ public class Account {
 
     private String password;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created = new Date();
+    @OneToMany(mappedBy = "owner") // mappedBy 양방향 관계
+    private Set<Study> studies = new HashSet<>();
 
-    private String yes;
+    public void addStudy(Study study) {
+        this.getStudies().add(study);
+        study.setOwner(this);
+    }
 
-    @Transient // 컬러으로 매핑 하지 않는다.
-    private String no;
-
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "street", column = @Column(name = "home_street"))
-    })
-    private Address homeAddress;
+    public void removeStudy(Study study) {
+        this.getStudies().remove(study);
+        study.setOwner(null);
+    }
 }

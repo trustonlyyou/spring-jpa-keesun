@@ -23,8 +23,21 @@ public class JpaRunner implements ApplicationRunner {
         account.setUsername("whiteship");
         account.setPassword("hibernate");
 
+        Study study = new Study();
+        study.setName("Sping Data Jpa");
+//        study.setOwner(account);
+
+
+        // 반드시 한 묶음
+//        account.getStudies().add(study);
+//        study.setOwner(account);
+
+        // 백기선이였으면 이렇게 메소드를 하나 따서 할 것이다.
+        account.addStudy(study);
+
         Session session = entityManager.unwrap(Session.class);
         session.save(account); // 이렇게도 저장 가능
+        session.save(study);
 //        entityManager.persist(account);
     }
 }
